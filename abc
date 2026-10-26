@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Web Pertama Saya</title>
+    <style>
+        body {
+            background-color: #1a1a1a;
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding-top: 100px;
+        }
+        h1 { color: #ff4757; }
+        .box {
+            background: #2f3542;
+            padding: 20px;
+            border-radius: 10px;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <h1>Halo Dunia! 🌍</h1>
+        <p>Ini adalah website pertama saya menggunakan GitHub Pages.</p>
+        <p>Selamat! Web sudah bisa diakses publik secara gratis.</p>
+    </div>
+</body>
+</html>
