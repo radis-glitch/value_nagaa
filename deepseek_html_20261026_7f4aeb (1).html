@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>✨ Value Naga — Dragon Adventures</title>
+  <!-- Font Awesome untuk ikon -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', 'Poppins', system-ui, sans-serif;
+    }
+
+    body {
+      background: radial-gradient(circle at 20% 30%, #0b0e1a, #010101);
+      color: #eaeef5;
+      min-height: 100vh;
+      padding: 2rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* Efek bintang / glow */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><circle cx="10" cy="10" r="1" fill="white" opacity="0.2"/><circle cx="80" cy="20" r="1.2" fill="white" opacity="0.3"/><circle cx="40" cy="70" r="1.5" fill="white" opacity="0.2"/><circle cx="90" cy="80" r="1" fill="white" opacity="0.4"/><circle cx="15" cy="90" r="1" fill="white" opacity="0.2"/></svg>');
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1400px;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* HEADER */
+    .hero {
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+
+    .hero h1 {
+      font-size: 3rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, #ffd966, #f7b32b, #ff9f1c);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 0 30px rgba(255, 200, 50, 0.4);
+      letter-spacing: -0.5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }
+
+    .hero h1 i {
+      background: linear-gradient(135deg, #ffd966, #f7b32b);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      font-size: 2.8rem;
+    }
+
+    .hero p {
+      color: #a0aec0;
+      font-size: 1.1rem;
+      margin-top: 6px;
+      font-weight: 300;
+      letter-spacing: 0.5px;
+    }
+
+    /* FILTER & SEARCH BAR */
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1.2rem;
+      margin-bottom: 2.5rem;
+      background: rgba(20, 25, 40, 0.7);
+      backdrop-filter: blur(12px);
+      padding: 1rem 1.8rem;
+      border-radius: 80px;
+      border: 1px solid rgba(255, 215, 0, 0.15);
+      box-shadow: 0 15px 35px -10px rgba(0, 0, 0, 0.7);
+    }
+
+    .filter-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+    }
+
+    .filter-btn {
+      background: transparent;
+      border: 1.5px solid rgba(255, 215, 0, 0.2);
+      color: #b0b8c5;
+      padding: 0.6rem 1.4rem;
+      border-radius: 40px;
+      font-weight: 600;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      letter-spacing: 0.3px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .filter-btn i {
+      font-size: 0.8rem;
+      opacity: 0.7;
+    }
+
+    .filter-btn:hover {
+      border-color: #ffd966;
+      color: #ffd966;
+      background: rgba(255, 215, 0, 0.05);
+      transform: translateY(-2px);
+    }
+
+    .filter-btn.active {
+      background: linear-gradient(135deg, #f7b32b, #ff9f1c);
+      border-color: #f7b32b;
+      color: #0b0e1a;
+      font-weight: 700;
+      box-shadow: 0 0 20px rgba(247, 179, 43, 0.4);
+    }
+
+    .filter-btn.active i {
+      opacity: 1;
+    }
+
+    .search-wrapper {
+      position: relative;
+      min-width: 240px;
+      flex: 1 1 240px;
+    }
+
+    .search-wrapper i {
+      position: absolute;
+      left: 18px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #6b7a8f;
+      font-size: 1rem;
+      transition: color 0.2s;
+    }
+
+    .search-wrapper input {
+      width: 100%;
+      padding: 0.8rem 1.2rem 0.8rem 2.8rem;
+      border-radius: 50px;
+      border: 1.5px solid rgba(255, 255, 255, 0.08);
+      background: rgba(10, 15, 25, 0.8);
+      color: #f0f4fa;
+      font-size: 0.95rem;
+      outline: none;
+      transition: all 0.25s ease;
+      font-weight: 400;
+    }
+
+    .search-wrapper input::placeholder {
+      color: #5f6c80;
+      font-weight: 300;
+    }
+
+    .search-wrapper input:focus {
+      border-color: #ffd966;
+      box-shadow: 0 0 0 4px rgba(255, 215, 0, 0.1);
+      background: rgba(10, 15, 25, 0.95);
+    }
+
+    .search-wrapper input:focus + i {
+      color: #ffd966;
+    }
+
+    /* GRID KARTU NAGA */
+    .dragon-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+      gap: 1.5rem;
+      margin-top: 1rem;
+    }
+
+    .dragon-card {
+      background: linear-gradient(145deg, #121826, #0b0e15);
+      border-radius: 24px;
+      padding: 1.3rem 1rem 1.2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      border: 1px solid rgba(255, 215, 0, 0.08);
+      box-shadow: 0 20px 30px -15px rgba(0, 0, 0, 0.8);
+      transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1);
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      backdrop-filter: blur(4px);
+    }
+
+    .dragon-card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 24px;
+      padding: 2px;
+      background: linear-gradient(135deg, rgba(255, 215, 0, 0.3), transparent 70%);
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .dragon-card:hover {
+      transform: translateY(-8px) scale(1.02);
+      border-color: rgba(255, 215, 0, 0.4);
+      box-shadow: 0 28px 40px -12px #000, 0 0 25px rgba(247, 179, 43, 0.2);
+    }
+
+    .dragon-card:hover::after {
+      opacity: 1;
+    }
+
+    /* GAMBAR NAGA — STYLE KARTU KOLEKSI */
+    .dragon-img {
+      width: 110px;
+      height: 110px;
+      background: radial-gradient(circle at 30% 30%, #2a3348, #131a28);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 0.9rem;
+      border: 2px solid rgba(255, 215, 0, 0.15);
+      box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.7), 0 8px 12px -5px #000;
+      transition: transform 0.3s, border-color 0.3s;
+    }
+
+    .dragon-card:hover .dragon-img {
+      transform: scale(1.05);
+      border-color: rgba(255, 215, 0, 0.5);
+    }
+
+    .dragon-img i {
+      font-size: 3.5rem;
+      color: #f7b32b;
+      filter: drop-shadow(0 0 8px rgba(247, 179, 43, 0.6));
+      transition: transform 0.3s;
+    }
+
+    .dragon-card:hover .dragon-img i {
+      transform: scale(1.1) rotate(3deg);
+    }
+
+    .dragon-name {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #fff6e5;
+      margin-bottom: 4px;
+      letter-spacing: -0.2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 100%;
+      text-shadow: 0 0 12px rgba(255, 200, 50, 0.2);
+    }
+
+    .dragon-price {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: #ffd966;
+      background: rgba(0, 0, 0, 0.5);
+      padding: 4px 12px;
+      border-radius: 40px;
+      margin: 6px 0 8px;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      border: 1px solid rgba(255, 215, 0, 0.2);
+    }
+
+    .dragon-price i {
+      font-size: 0.8rem;
+      color: #f7b32b;
+    }
+
+    .dragon-rarity {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-weight: 700;
+      padding: 4px 14px;
+      border-radius: 40px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #b0c4de;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      margin-top: 4px;
+    }
+
+    .dragon-rarity i {
+      font-size: 0.7rem;
+      color: #f7b32b;
+    }
+
+    /* MODAL DETAIL */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(10px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      z-index: 1000;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s, visibility 0.3s;
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .modal-card {
+      background: linear-gradient(145deg, #141c2c, #0a0f18);
+      max-width: 580px;
+      width: 100%;
+      border-radius: 38px;
+      padding: 2rem 2rem 2rem;
+      border: 1px solid rgba(255, 215, 0, 0.2);
+      box-shadow: 0 40px 60px -15px #000, 0 0 60px rgba(247, 179, 43, 0.15);
+      transform: scale(0.9) translateY(20px);
+      transition: transform 0.35s cubic-bezier(0.2, 0.9, 0.3, 1.1), opacity 0.3s;
+      position: relative;
+      color: #eef3fc;
+    }
+
+    .modal-overlay.active .modal-card {
+      transform: scale(1) translateY(0);
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 18px;
+      right: 22px;
+      background: rgba(255, 255, 255, 0.05);
+      border: none;
+      color: #9aaabb;
+      font-size: 1.8rem;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .modal-close:hover {
+      background: rgba(255, 215, 0, 0.15);
+      color: #ffd966;
+      transform: rotate(90deg);
+    }
+
+    .modal-header {
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+      margin-bottom: 1.8rem;
+      padding-right: 2rem;
+    }
+
+    .modal-icon {
+      width: 80px;
+      height: 80px;
+      background: radial-gradient(circle at 30% 30%, #2a3348, #131a28);
+      border-radius: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid #ffd96633;
+      box-shadow: 0 0 25px #f7b32b22;
+    }
+
+    .modal-icon i {
+      font-size: 3.2rem;
+      color: #f7b32b;
+      filter: drop-shadow(0 0 10px #f7b32b);
+    }
+
+    .modal-title h2 {
+      font-size: 2rem;
+      font-weight: 800;
+      color: #fff6e0;
+      letter-spacing: -0.5px;
+      line-height: 1.2;
+    }
+
+    .modal-rarity {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      font-weight: 700;
+      color: #ffd966;
+      background: rgba(255, 215, 0, 0.1);
+      display: inline-block;
+      padding: 3px 14px;
+      border-radius: 40px;
+      margin-top: 6px;
+      border: 1px solid #ffd96644;
+    }
+
+    .modal-price {
+      background: rgba(0, 0, 0, 0.4);
+      border-radius: 24px;
+      padding: 0.9rem 1.4rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.6rem;
+      border: 1px solid rgba(255, 215, 0, 0.2);
+    }
+
+    .modal-price .label {
+      color: #9aaabb;
+      font-weight: 500;
+      font-size: 0.9rem;
+      letter-spacing: 0.5px;
+    }
+
+    .modal-price .value {
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: #ffd966;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .modal-price .value i {
+      font-size: 1.3rem;
+    }
+
+    .modal-section {
+      margin-bottom: 1.5rem;
+    }
+
+    .modal-section h4 {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: #9aaabb;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .modal-section h4 i {
+      color: #f7b32b;
+      font-size: 0.9rem;
+    }
+
+    .modal-section p {
+      color: #ccd9eb;
+      font-size: 1rem;
+      line-height: 1.6;
+      font-weight: 300;
+      background: rgba(255, 255, 255, 0.02);
+      padding: 0.9rem 1.2rem;
+      border-radius: 18px;
+      border-left: 4px solid #f7b32b;
+    }
+
+    .modal-section p i {
+      color: #ffd966;
+      margin-right: 6px;
+    }
+
+    /* STATE KOSONG */
+    .empty-state {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 4rem 1rem;
+      color: #6b7a8f;
+      font-size: 1.2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .empty-state i {
+      font-size: 4rem;
+      opacity: 0.3;
+      color: #f7b32b;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 700px) {
+      body { padding: 1.2rem 0.8rem; }
+      .hero h1 { font-size: 2.2rem; }
+      .hero h1 i { font-size: 2rem; }
+      .controls { flex-direction: column; align-items: stretch; border-radius: 40px; padding: 1rem; }
+      .filter-group { justify-content: center; }
+      .filter-btn { padding: 0.5rem 1rem; font-size: 0.75rem; }
+      .dragon-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 1rem; }
+      .dragon-img { width: 85px; height: 85px; }
+      .dragon-img i { font-size: 2.8rem; }
+      .dragon-name { font-size: 1rem; }
+      .dragon-price { font-size: 0.9rem; }
+      .modal-card { padding: 1.6rem; }
+      .modal-header { flex-direction: column; text-align: center; gap: 0.7rem; padding-right: 0; }
+      .modal-title h2 { font-size: 1.7rem; }
+    }
+
+    @media (max-width: 400px) {
+      .dragon-grid { grid-template-columns: 1fr 1fr; }
+      .filter-btn { font-size: 0.65rem; padding: 0.4rem 0.8rem; }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <!-- HEADER -->
+  <div class="hero">
+    <h1><i class="fas fa-dragon"></i> Value Naga <i class="fas fa-gem"></i></h1>
+    <p>Koleksi nilai naga Dragon Adventures • Oktober 2026</p>
+  </div>
+
+  <!-- FILTER & SEARCH -->
+  <div class="controls">
+    <div class="filter-group" id="filterGroup">
+      <button class="filter-btn active" data-filter="all"><i class="fas fa-globe"></i> Semua</button>
+      <button class="filter-btn" data-filter="season"><i class="fas fa-calendar-alt"></i> Naga Season</button>
+      <button class="filter-btn" data-filter="event"><i class="fas fa-star"></i> Naga Event</button>
+      <button class="filter-btn" data-filter="world"><i class="fas fa-tree"></i> Naga Dunia</button>
+    </div>
+    <div class="search-wrapper">
+      <i class="fas fa-search"></i>
+      <input type="text" id="searchInput" placeholder="Cari nama naga...">
+    </div>
+  </div>
+
+  <!-- GRID NAGA -->
+  <div class="dragon-grid" id="dragonGrid"></div>
+</div>
+
+<!-- MODAL DETAIL -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal-card" id="modalCard">
+    <button class="modal-close" id="modalClose"><i class="fas fa-times"></i></button>
+    <div class="modal-header">
+      <div class="modal-icon">
+        <i class="fas fa-dragon" id="modalIcon"></i>
+      </div>
+      <div class="modal-title">
+        <h2 id="modalName">Veidreki</h2>
+        <span class="modal-rarity" id="modalRarity">Season • Relic</span>
+      </div>
+    </div>
+    <div class="modal-price">
+      <span class="label"><i class="fas fa-coins"></i> Harga Coin</span>
+      <span class="value" id="modalPrice"><i class="fas fa-coins"></i> 50M - 60M</span>
+    </div>
+    <div class="modal-section">
+      <h4><i class="fas fa-map-signs"></i> Cara Mendapatkan</h4>
+      <p id="modalHow"><i class="fas fa-info-circle"></i> Diperoleh dari Season 1 (Relic) — tidak dapat diperoleh lagi.</p>
+    </div>
+    <div class="modal-section">
+      <h4><i class="fas fa-scroll"></i> Deskripsi</h4>
+      <p id="modalDesc">Naga legendaris dengan nilai tertinggi di Dragon Adventures. Sangat langka dan menjadi simbol prestise.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ============================================================
+  // DATA NAGA — diambil dari game.guide (game.guide/dragon-adventures-value-list)
+  // Setiap entri memiliki: name, price, rarity, category (season/event/world), how, desc
+  // ============================================================
+  const dragonsData = [
+    // ---- SEASON ----
+    { name: "Veidreki", price: "50M - 60M", rarity: "Season • Relic", category: "season", how: "Diperoleh dari Season 1 (Relic) — tidak dapat diperoleh lagi.", desc: "Naga legendaris dengan nilai tertinggi di Dragon Adventures. Sangat langka dan menjadi simbol prestise." },
+    { name: "Alatura", price: "28M - 35M", rarity: "Season • Legendary", category: "season", how: "Season 2 (Legendary) — sudah tidak tersedia.", desc: "Naga season legendaris dengan sayap megah dan nilai yang sangat tinggi." },
+    { name: "Amaris", price: "10M", rarity: "Season • Legendary", category: "season", how: "Season 3 (Legendary) — tidak dapat diperoleh lagi.", desc: "Naga season legendaris dengan aura elegan dan nilai fantastis." },
+    { name: "Nakahii", price: "4M - 5M", rarity: "Season • Epic", category: "season", how: "Season 4 (Epic) — sudah tidak tersedia.", desc: "Naga season epic dengan nilai yang cukup tinggi di pasar." },
+    { name: "Garutagoyle", price: "4.5M", rarity: "Season • Legendary", category: "season", how: "Season 5 (Legendary) — tidak dapat diperoleh lagi.", desc: "Naga season legendaris dengan penampilan garuda yang gagah." },
+    { name: "Voltstorm", price: "3M", rarity: "Season • Relic", category: "season", how: "Season 6 (Relic) — sudah tidak tersedia.", desc: "Naga season relic dengan elemen petir yang sangat langka." },
+    { name: "Calimaki", price: "2M - 3M", rarity: "Season • Epic", category: "season", how: "Season 7 (Epic) — tidak dapat diperoleh lagi.", desc: "Naga season epic dengan nilai stabil di pasaran." },
+    { name: "Aeroseys", price: "2M - 3M", rarity: "Season • Epic", category: "season", how: "Season 8 (Epic) — sudah tidak tersedia.", desc: "Naga season epic dengan elemen angin yang khas." },
+    { name: "Phyllantis", price: "3M", rarity: "Season • Epic", category: "season", how: "Season 9 (Epic) — tidak dapat diperoleh lagi.", desc: "Naga season epic dengan nuansa alam yang menenangkan." },
+    { name: "Mosuraki", price: "2M - 3M", rarity: "Season • Epic", category: "season", how: "Season 10 (Epic) — sudah tidak tersedia.", desc: "Naga season epic dengan sayap indah seperti kupu-kupu." },
+    { name: "Chrysaloom", price: "1M - 3M", rarity: "Season • Epic", category: "season", how: "Season 11 (Epic) — tidak dapat diperoleh lagi.", desc: "Naga season epic dengan transisi warna yang memukau." },
+    { name: "Caunaris", price: "3M", rarity: "Season • Epic", category: "season", how: "Season 12 (Epic) — sudah tidak tersedia.", desc: "Naga season epic dengan nilai yang cukup tinggi." },
+    { name: "Amoonita", price: "1.5M - 2M", rarity: "Season • Epic", category: "season", how: "Season 13 (Epic) — tidak dapat diperoleh lagi.", desc: "Naga season epic dengan tema bulan yang elegan." },
+    { name: "Diraixos", price: "1M - 2M", rarity: "Season • Epic", category: "season", how: "Season 14 (Epic) — sudah tidak tersedia.", desc: "Naga season epic dengan desain unik dan langka." },
+    { name: "Canyarches", price: "2M", rarity: "Season • Epic", category: "season", how: "Season 15 (Epic) — tidak dapat diperoleh lagi.", desc: "Naga season epic dengan bentuk tubuh yang ramping." },
+    { name: "Fleurianthus", price: "1M - 2M", rarity: "Season • Epic", category: "season", how: "Season 16 (Epic) — sudah tidak tersedia.", desc: "Naga season epic bertema bunga yang cantik." },
+    { name: "Putrefacceum", price: "1.5M - 2M", rarity: "Season • Relic", category: "season", how: "Season 17 (Relic) — tidak dapat diperoleh lagi.", desc: "Naga season relic dengan tema pembusukan yang unik." },
+    { name: "Tronat", price: "1M - 2M", rarity: "Season • Legendary", category: "season", how: "Season 18 (Legendary) — sudah tidak tersedia.", desc: "Naga season legendaris dengan nilai yang stabil." },
+    { name: "Carnealgon", price: "2M", rarity: "Season • Epic", category: "season", how: "Season 19 (Epic) — tidak dapat diperoleh lagi.", desc: "Naga season epic dengan tema karnivora." },
+    { name: "Glaquacus", price: "800K - 1.5M", rarity: "Season • Epic", category: "season", how: "Season 20 (Epic) — sudah tidak tersedia.", desc: "Naga season epic dengan elemen es yang dingin." },
+    { name: "Chameleaf", price: "1M - 1.5M", rarity: "Season • Epic", category: "season", how: "Season 21 (Epic) — tidak dapat diperoleh lagi.", desc: "Naga season epic dengan kemampuan kamuflase." },
+    { name: "Malupentys", price: "1M", rarity: "Season • Legendary", category: "season", how: "Season 22 (Legendary) — sudah tidak tersedia.", desc: "Naga season legendaris dengan nilai yang cukup tinggi." },
+    { name: "Gyngefared", price: "1M", rarity: "Season • Epic", category: "season", how: "Season 23 (Epic) — tidak dapat diperoleh lagi.", desc: "Naga season epic dengan desain yang unik." },
+    { name: "Arielisces", price: "1M", rarity: "Season • Epic", category: "season", how: "Season 24 (Epic) — sudah tidak tersedia.", desc: "Naga season epic bertema zodiak Pisces." },
+    { name: "Gordigourd", price: "1M", rarity: "Season • Epic", category: "season", how: "Season 25 (Epic) — tidak dapat diperoleh lagi.", desc: "Naga season epic dengan bentuk seperti labu." },
+    { name: "Flornymphis", price: "1M", rarity: "Season • Legendary", category: "season", how: "Season 26 (Legendary) — sudah tidak tersedia.", desc: "Naga season legendaris bertema bunga." },
+    { name: "Caelydris", price: "1M", rarity: "Season • Epic", category: "season", how: "Season 27 (Epic) — tidak dapat diperoleh lagi.", desc: "Naga season epic dengan sayap indah." },
+    { name: "Eisendrache", price: "1M", rarity: "Season • Epic", category: "season", how: "Season 28 (Epic) — sudah tidak tersedia.", desc: "Naga season epic dengan elemen besi." },
+    { name: "Wuonghou", price: "500K - 1M", rarity: "Season • Epic", category: "season", how: "Season 29 (Epic) — tidak dapat diperoleh lagi.", desc: "Naga season epic dengan tema monyet." },
+    { name: "Sentalius", price: "1M", rarity: "Season • Legendary", category: "season", how: "Season 30 (Legendary) — sudah tidak tersedia.", desc: "Naga season legendaris dengan nilai yang stabil." },
+    { name: "Trilinaris", price: "1M", rarity: "Season • Epic", category: "season", how: "Season 31 (Epic) — tidak dapat diperoleh lagi.", desc: "Naga season epic dengan tiga elemen." },
+    { name: "Astraeisis", price: "1M", rarity: "Season • Epic", category: "season", how: "Season 32 (Epic) — sudah tidak tersedia.", desc: "Naga season epic bertema bintang." },
+    { name: "Pagulau", price: "500K - 1M", rarity: "Season • Epic", category: "season", how: "Season 33 (Epic) — tidak dapat diperoleh lagi.", desc: "Naga season epic dengan tema pulau." },
+    { name: "Pananisea", price: "1M", rarity: "Season • Epic", category: "season", how: "Season 34 (Epic) — sudah tidak tersedia.", desc: "Naga season epic bertema laut." },
+    { name: "Fabledrak", price: "1M", rarity: "Season • Legendary", category: "season", how: "Season 35 (Legendary) — tidak dapat diperoleh lagi.", desc: "Naga season legendaris dengan cerita fabel." },
+    { name: "Quasaldrus", price: "500K - 1M", rarity: "Season • Epic", category: "season", how: "Season 36 (Epic) — sudah tidak tersedia.", desc: "Naga season epic dengan elemen kuarsa." },
+    { name: "Rozora", price: "500K - 1M", rarity: "Season • Epic", category: "season", how: "Season 37 (Epic) — tidak dapat diperoleh lagi.", desc: "Naga season epic bertema mawar." },
+    { name: "Harvitius", price: "800K", rarity: "Season • Epic", category: "season", how: "Season 38 (Epic) — sudah tidak tersedia.", desc: "Naga season epic dengan desain unik." },
+    { name: "Cirquemaar", price: "700K", rarity: "Season • Epic", category: "season", how: "Season 39 (Epic) — tidak dapat diperoleh lagi.", desc: "Naga season epic bertema sirkus." },
+    { name: "Trametos", price: "500K - 700K", rarity: "Season • Epic", category: "season", how: "Season 40 (Epic) — sudah tidak tersedia.", desc: "Naga season epic dengan nilai yang terjangkau." },
+    { name: "Thorkonyx", price: "200K - 500K", rarity: "Season • Epic", category: "season", how: "Season 41 (Epic) — tidak dapat diperoleh lagi.", desc: "Naga season epic dengan tema Thor." },
+    { name: "Fernifex", price: "500K", rarity: "Season • Epic", category: "season", how: "Season 42 (Epic) — sudah tidak tersedia.", desc: "Naga season epic bertema pakis." },
+    { name: "Livalient", price: "500K", rarity: "Season • Legendary", category: "season", how: "Season 43 (Legendary) — tidak dapat diperoleh lagi.", desc: "Naga season legendaris dengan nilai yang stabil." },
+    { name: "Tenebis", price: "400K - 500K", rarity: "Season • Epic", category: "season", how: "Season 44 (Epic) — sudah tidak tersedia.", desc: "Naga season epic bertema kegelapan." },
+    { name: "Fulong", price: "300K - 400K", rarity: "Season • Legendary", category: "season", how: "Season 45 (Legendary) — tidak dapat diperoleh lagi.", desc: "Naga season legendaris dengan tema naga oriental." },
+    { name: "Fueguin", price: "300K", rarity: "Season • Epic", category: "season", how: "Season 46 (Epic) — sudah tidak tersedia.", desc: "Naga season epic bertema api." },
+    { name: "Viridik", price: "100K - 300K", rarity: "Season • Epic", category: "season", how: "Season 47 (Epic) — tidak dapat diperoleh lagi.", desc: "Naga season epic dengan warna hijau." },
+    { name: "Lum Luenh", price: "75K - 200K", rarity: "Season • Epic", category: "season", how: "Season 48 (Epic) — sudah tidak tersedia.", desc: "Naga season epic dengan cahaya bulan." },
+    { name: "Snoballista", price: "100K - 200K", rarity: "Season • Epic", category: "season", how: "Season 49 (Epic) — tidak dapat diperoleh lagi.", desc: "Naga season epic bertema bola salju." },
+    { name: "Vulpiruth", price: "100K - 200K", rarity: "Season • Epic", category: "season", how: "Season 50 (Epic) — sudah tidak tersedia.", desc: "Naga season epic bertema rubah." },
+    { name: "Sunfloris", price: "200K", rarity: "Season • Epic", category: "season", how: "Season 51 (Epic) — tidak dapat diperoleh lagi.", desc: "Naga season epic bertema bunga matahari." },
+    { name: "Tsukuizan", price: "25K - 100K", rarity: "Season • Epic", category: "season", how: "Season 52 (Epic) — sudah tidak tersedia.", desc: "Naga season epic bertema bulan." },
+    { name: "Stymelisk", price: "30K - 100K", rarity: "Season • Epic", category: "season", how: "Season 53 (Epic) — tidak dapat diperoleh lagi.", desc: "Naga season epic dengan nilai rendah." },
+    { name: "Ovicirus", price: "25K - 75K", rarity: "Season • Epic", category: "season", how: "Season 54 (Epic) — sudah tidak tersedia.", desc: "Naga season epic bertema domba." },
+    { name: "Phocaphan", price: "25K - 50K", rarity: "Season • Epic", category: "season", how: "Season 55 (Epic) — tidak dapat diperoleh lagi.", desc: "Naga season epic bertema anjing laut." },
+    { name: "Woodluma", price: "25K - 50K", rarity: "Season • Epic", category: "season", how: "Season 56 (Epic) — sudah tidak tersedia.", desc: "Naga season epic bertema kayu." },
+    { name: "Yueshi", price: "25K", rarity: "Season • Epic", category: "season", how: "Season 57 (Epic) — tidak dapat diperoleh lagi.", desc: "Naga season epic bertema bulan." },
+    { name: "Hongliang", price: "25K", rarity: "Season • Epic", category: "season", how: "Season 58 (Epic) — sudah tidak tersedia.", desc: "Naga season epic bertema merah." },
+    { name: "Makoura", price: "25K", rarity: "Season • Epic", category: "season", how: "Season 59 (Epic) — tidak dapat diperoleh lagi.", desc: "Naga season epic dengan nilai rendah." },
+    { name: "Iridesia", price: "25K", rarity: "Season • Epic", category: "season", how: "Season 60 (Epic) — sudah tidak tersedia.", desc: "Naga season epic bertema pelangi." },
+    { name: "Torneidus", price: "25K", rarity: "Season • Epic", category: "season", how: "Season 61 (Epic) — tidak dapat diperoleh lagi.", desc: "Naga season epic bertema tornado." },
+    { name: "Hoarusn", price: "25K", rarity: "Season • Epic", category: "season", how: "Season 62 (Epic) — sudah tidak tersedia.", desc: "Naga season epic dengan nilai rendah." },
+    { name: "Tempiritus", price: "25K", rarity: "Season • Epic", category: "season", how: "Season 63 (Epic) — tidak dapat diperoleh lagi.", desc: "Naga season epic bertema waktu." },
+    { name: "Nor'gan", price: "25K", rarity: "Season • Epic", category: "season", how: "Season 64 (Epic) — sudah tidak tersedia.", desc: "Naga season epic dengan nilai rendah." },
+    { name: "Varana", price: "25K", rarity: "Season • Epic", category: "season", how: "Season 65 (Epic) — tidak dapat diperoleh lagi.", desc: "Naga season epic bertema kadal." },
+
+    // ---- EVENT ----
+    { name: "Tianma", price: "1M - 1.5M", rarity: "Event • Legendary", category: "event", how: "Event spesial (Legendary) — diperoleh dari event terbatas.", desc: "Naga event legendaris dengan nilai tinggi." },
+    { name: "Stratalix", price: "1.5M", rarity: "Event • Legendary", category: "event", how: "Event spesial (Legendary) — diperoleh dari event terbatas.", desc: "Naga event legendaris dengan nilai fantastis." },
+    { name: "Cynphion-Noire", price: "1M", rarity: "Event • Legendary", category: "event", how: "Event spesial (Legendary) — diperoleh dari event terbatas.", desc: "Naga event legendaris bertema hitam." },
+    { name: "Vulcoramor", price: "900K - 1M", rarity: "Event • Legendary", category: "event", how: "Event Valentine (Legendary) — diperoleh dari event terbatas.", desc: "Naga event legendaris bertema cinta." },
+    { name: "Ancient Tosknir", price: "500K", rarity: "Event • Legendary", category: "event", how: "Event kuno (Legendary) — diperoleh dari event terbatas.", desc: "Naga event legendaris dari masa lalu." },
+    { name: "Ancient Skriffei", price: "300K", rarity: "Event • Legendary", category: "event", how: "Event kuno (Legendary) — diperoleh dari event terbatas.", desc: "Naga event legendaris kuno." },
+    { name: "Motorouk", price: "200K - 300K", rarity: "Event • Legendary", category: "event", how: "Event spesial (Legendary) — diperoleh dari event terbatas.", desc: "Naga event legendaris bertema motor." },
+    { name: "Djaevelhest", price: "250K - 300K", rarity: "Event • Legendary", category: "event", how: "Event spesial (Legendary) — diperoleh dari event terbatas.", desc: "Naga event legendaris bertema kuda." },
+    { name: "Lucklif", price: "100K - 200K", rarity: "Event • Epic", category: "event", how: "Event St. Patrick (Epic) — diperoleh dari event terbatas.", desc: "Naga event epic bertema keberuntungan." },
+    { name: "Lunaesol", price: "100K - 200K", rarity: "Event • Epic", category: "event", how: "Event spesial (Epic) — diperoleh dari event terbatas.", desc: "Naga event epic bertema bulan dan matahari." },
+    { name: "Ancient Aranga", price: "75K - 100K", rarity: "Event • Legendary", category: "event", how: "Event kuno (Legendary) — diperoleh dari event terbatas.", desc: "Naga event legendaris kuno." },
+    { name: "Vyreas", price: "100K", rarity: "Event • Legendary", category: "event", how: "Event spesial (Legendary) — diperoleh dari event terbatas.", desc: "Naga event legendaris dengan nilai stabil." },
+    { name: "Aranga", price: "50K - 100K", rarity: "Event • Legendary", category: "event", how: "Event spesial (Legendary) — diperoleh dari event terbatas.", desc: "Naga event legendaris populer." },
+    { name: "Khorgeryn", price: "100K", rarity: "Event • Legendary", category: "event", how: "Event spesial (Legendary) — diperoleh dari event terbatas.", desc: "Naga event legendaris bertema khor." },
+    { name: "Polairistel", price: "75K - 100K", rarity: "Event • Legendary", category: "event", how: "Event spesial (Legendary) — diperoleh dari event terbatas.", desc: "Naga event legendaris bertema kutub." },
+    { name: "Betevial", price: "75K - 100K", rarity: "Event • Legendary", category: "event", how: "Event spesial (Legendary) — diperoleh dari event terbatas.", desc: "Naga event legendaris dengan nilai stabil." },
+    { name: "Mielebee", price: "25K - 100K", rarity: "Event • Epic", category: "event", how: "Event lebah (Epic) — diperoleh dari event terbatas.", desc: "Naga event epic bertema lebah madu." },
+    { name: "Catruca", price: "50K - 100K", rarity: "Event • Legendary", category: "event", how: "Event spesial (Legendary) — diperoleh dari event terbatas.", desc: "Naga event legendaris bertema kucing." },
+    { name: "Chippychiip", price: "75K - 100K", rarity: "Event • Legendary", category: "event", how: "Event spesial (Legendary) — diperoleh dari event terbatas.", desc: "Naga event legendaris bertema chipmunk." },
+    { name: "Araneaix", price: "25K - 80K", rarity: "Event • Epic", category: "event", how: "Event Halloween (Epic) — diperoleh dari event terbatas.", desc: "Naga event epic bertema laba-laba." },
+    { name: "Gundrakken", price: "75K", rarity: "Event • Legendary", category: "event", how: "Event spesial (Legendary) — diperoleh dari event terbatas.", desc: "Naga event legendaris bertema gundrak." },
+    { name: "Firifeller", price: "25K - 75K", rarity: "Event • Epic", category: "event", how: "Event spesial (Epic) — diperoleh dari event terbatas.", desc: "Naga event epic bertema api." },
+    { name: "Roborus V", price: "75K", rarity: "Event • Legendary", category: "event", how: "Event robot (Legendary) — diperoleh dari event terbatas.", desc: "Naga event legendaris robot versi 5." },
+    { name: "Mallopii", price: "75K", rarity: "Event • Legendary", category: "event", how: "Event spesial (Legendary) — diperoleh dari event terbatas.", desc: "Naga event legendaris dengan nilai stabil." },
+    { name: "Nightmare Paranox", price: "25K - 75K", rarity: "Event • Epic", category: "event", how: "Event Halloween (Epic) — diperoleh dari event terbatas.", desc: "Naga event epic bertema mimpi buruk." },
+    { name: "Voltagen", price: "75K", rarity: "Event • Legendary", category: "event", how: "Event listrik (Legendary) — diperoleh dari event terbatas.", desc: "Naga event legendaris bertema listrik." },
+    { name: "Cryptillow", price: "75K", rarity: "Event • Legendary", category: "event", how: "Event spesial (Legendary) — diperoleh dari event terbatas.", desc: "Naga event legendaris bertema kriptik." },
+    { name: "Penguitus", price: "75K", rarity: "Event • Legendary", category: "event", how: "Event musim dingin (Legendary) — diperoleh dari event terbatas.", desc: "Naga event legendaris bertema penguin." },
+    { name: "Tosknir", price: "75K", rarity: "Event • Legendary", category: "event", how: "Event spesial (Legendary) — diperoleh dari event terbatas.", desc: "Naga event legendaris dengan nilai stabil." },
+    { name: "Allpehourn", price: "25K - 75K", rarity: "Event • Legendary", category: "event", how: "Event spesial (Legendary) — diperoleh dari event terbatas.", desc: "Naga event legendaris bertema gajah." },
+    { name: "Volkumos", price: "25K - 75K", rarity: "Event • Epic", category: "event", how: "Event vulkanik (Epic) — diperoleh dari event terbatas.", desc: "Naga event epic bertema gunung berapi." },
+    { name: "Yggdraten", price: "75K", rarity: "Event • Legendary", category: "event", how: "Event mitologi (Legendary) — diperoleh dari event terbatas.", desc: "Naga event legendaris bertema Yggdrasil." },
+    { name: "Xerthos", price: "35K - 60K", rarity: "Event • Rare", category: "event", how: "Event spesial (Rare) — diperoleh dari event terbatas.", desc: "Naga event rare dengan nilai terjangkau." },
+    { name: "Casirius", price: "25K - 50K", rarity: "Event • Epic", category: "event", how: "Event spesial (Epic) — diperoleh dari event terbatas.", desc: "Naga event epic dengan nilai rendah." },
+    { name: "Mechanoxide", price: "25K - 50K", rarity: "Event • Epic", category: "event", how: "Event robot (Epic) — diperoleh dari event terbatas.", desc: "Naga event epic bertema mekanik." },
+    { name: "Cutiepatoo", price: "25K - 50K", rarity: "Event • Epic", category: "event", how: "Event spesial (Epic) — diperoleh dari event terbatas.", desc: "Naga event epic yang menggemaskan." },
+    { name: "Falugeis", price: "15K - 40K", rarity: "Event • Epic", category: "event", how: "Event spesial (Epic) — diperoleh dari event terbatas.", desc: "Naga event epic dengan nilai rendah." },
+    { name: "Robodon", price: "25K", rarity: "Event • Epic", category: "event", how: "Event robot (Epic) — diperoleh dari event terbatas.", desc: "Naga event epic bertema robot." },
+    { name: "Desygual", price: "25K", rarity: "Event • Epic", category: "event", how: "Event desain (Epic) — diperoleh dari event terbatas.", desc: "Naga event epic bertema desain." },
+    { name: "Andronaut", price: "25K", rarity: "Event • Epic", category: "event", how: "Event luar angkasa (Epic) — diperoleh dari event terbatas.", desc: "Naga event epic bertema astronot." },
+    { name: "Cosmalisk", price: "25K", rarity: "Event • Legendary", category: "event", how: "Event kosmik (Legendary) — diperoleh dari event terbatas.", desc: "Naga event legendaris bertema kosmos." },
+    { name: "Cybernid", price: "25K", rarity: "Event • Uncommon", category: "event", how: "Event siber (Uncommon) — diperoleh dari event terbatas.", desc: "Naga event uncommon bertema siber." },
+    { name: "Dratheros", price: "25K", rarity: "Event • Legendary", category: "event", how: "Event spesial (Legendary) — diperoleh dari event terbatas.", desc: "Naga event legendaris dengan nilai rendah." },
+    { name: "Roborus X", price: "25K", rarity: "Event • Epic", category: "event", how: "Event robot (Epic) — diperoleh dari event terbatas.", desc: "Naga event epic robot versi X." },
+    { name: "Gaulyra", price: "25K", rarity: "Event • Legendary", category: "event", how: "Event spesial (Legendary) — diperoleh dari event terbatas.", desc: "Naga event legendaris dengan nilai rendah." },
+    { name: "Quetzaloctli", price: "25K", rarity: "Event • Legendary", category: "event", how: "Event mitologi (Legendary) — diperoleh dari event terbatas.", desc: "Naga event legendaris bertema Quetzalcoatl." },
+    { name: "Paranox", price: "25K", rarity: "Event • Rare", category: "event", how: "Event spesial (Rare) — diperoleh dari event terbatas.", desc: "Naga event rare dengan nilai rendah." },
+    { name: "Quahtona", price: "25K", rarity: "Event • Epic", category: "event", how: "Event spesial (Epic) — diperoleh dari event terbatas.", desc: "Naga event epic dengan nilai rendah." },
+    { name: "Yulereinn", price: "5K - 25K", rarity: "Event • Rare", category: "event", how: "Event Natal (Rare) — diperoleh dari event terbatas.", desc: "Naga event rare bertema Natal." },
+    { name: "Verscervus", price: "10K - 25K", rarity: "Event • Epic", category: "event", how: "Event spesial (Epic) — diperoleh dari event terbatas.", desc: "Naga event epic bertema rusa." },
+    { name: "Goliatomb", price: "25K", rarity: "Event • Epic", category: "event", how: "Event Halloween (Epic) — diperoleh dari event terbatas.", desc: "Naga event epic bertema makam." },
+    { name: "Avefir", price: "25K", rarity: "Event • Uncommon", category: "event", how: "Event spesial (Uncommon) — diperoleh dari event terbatas.", desc: "Naga event uncommon bertema pohon." },
+    { name: "Scrawei", price: "10K", rarity: "Event • Uncommon", category: "event", how: "Event spesial (Uncommon) — diperoleh dari event terbatas.", desc: "Naga event uncommon bertema sampah." },
+    { name: "Tarotta", price: "5K - 10K", rarity: "Event • Uncommon", category: "event", how: "Event tarot (Uncommon) — diperoleh dari event terbatas.", desc: "Naga event uncommon bertema tarot." },
+    { name: "Nadaler", price: "10K", rarity: "Event • Rare", category: "event", how: "Event Natal (Rare) — diperoleh dari event terbatas.", desc: "Naga event rare bertema Natal." },
+    { name: "Hexalios", price: "10K", rarity: "Event • Rare", category: "event", how: "Event sihir (Rare) — diperoleh dari event terbatas.", desc: "Naga event rare bertema sihir." },
+    { name: "Solarizon", price: "10K", rarity: "Event • Rare", category: "event", how: "Event matahari (Rare) — diperoleh dari event terbatas.", desc: "Naga event rare bertema matahari." },
+    { name: "Skriffei", price: "10K", rarity: "Event • Common", category: "event", how: "Event spesial (Common) — diperoleh dari event terbatas.", desc: "Naga event common dengan nilai rendah." },
+    { name: "Dysuva", price: "10K", rarity: "Event • Rare", category: "event", how: "Event spesial (Rare) — diperoleh dari event terbatas.", desc: "Naga event rare dengan nilai rendah." },
+    { name: "Fayrah", price: "10K", rarity: "Event • Rare", category: "event", how: "Event peri (Rare) — diperoleh dari event terbatas.", desc: "Naga event rare bertema peri." },
+    { name: "Ayatrice", price: "5K", rarity: "Event • Uncommon", category: "event", how: "Event spesial (Uncommon) — diperoleh dari event terbatas.", desc: "Naga event uncommon dengan nilai rendah." },
+    { name: "Skyrix", price: "3K", rarity: "Event • Common", category: "event", how: "Event langit (Common) — diperoleh dari event terbatas.", desc: "Naga event common bertema langit." },
+    { name: "Paukiki", price: "1K", rarity: "Event • Uncommon", category: "event", how: "Event laba-laba (Uncommon) — diperoleh dari event terbatas.", desc: "Naga event uncommon bertema laba-laba." },
+    { name: "Skelltor", price: "1K", rarity: "Event • Common", category: "event", how: "Event kerangka (Common) — diperoleh dari event terbatas.", desc: "Naga event common bertema kerangka." },
+
+    // ---- WORLD ----
+    { name: "Mistrasune", price: "25K", rarity: "World • Epic", category: "world", how: "Dunia (World) — dapat diperoleh dari eksplorasi dunia.", desc: "Naga dunia epic dengan nilai rendah." },
+    { name: "Karukiri", price: "25K", rarity: "World • Epic", category: "world", how: "Dunia (World) — dapat diperoleh dari eksplorasi dunia.", desc: "Naga dunia epic dengan nilai rendah." },
+    { name: "Zinthros", price: "15K", rarity: "World • Rare", category: "world", how: "Dunia (World) — dapat diperoleh dari eksplorasi dunia.", desc: "Naga dunia rare dengan nilai rendah." },
+    { name: "Radidon", price: "10K", rarity: "World • Rare", category: "world", how: "Dunia (World) — dapat diperoleh dari eksplorasi dunia.", desc: "Naga dunia rare dengan nilai rendah." },
+    { name: "Dunvolth", price: "10K", rarity: "World • Rare", category: "world", how: "Dunia (World) — dapat diperoleh dari eksplorasi dunia.", desc: "Naga dunia rare dengan nilai rendah." },
+    { name: "Mother Dragon", price: "10K", rarity: "World • Rare", category: "world", how: "Dunia (World) — dapat diperoleh dari eksplorasi dunia.", desc: "Naga dunia rare yang legendaris." },
+    { name: "Soukeyi", price: "10K", rarity: "World • Rare", category: "world", how: "Dunia (World) — dapat diperoleh dari eksplorasi dunia.", desc: "Naga dunia rare dengan nilai rendah." },
+    { name: "Onagajin", price: "10K", rarity: "World • Rare", category: "world", how: "Dunia (World) — dapat diperoleh dari eksplorasi dunia.", desc: "Naga dunia rare dengan nilai rendah." },
+    { name: "Glacegar", price: "10K", rarity: "World • Rare", category: "world", how: "Dunia (World) — dapat diperoleh dari eksplorasi dunia.", desc: "Naga dunia rare bertema es." },
+    { name: "Ferorex", price: "10K", rarity: "World • Rare", category: "world", how: "Dunia (World) — dapat diperoleh dari eksplorasi dunia.", desc: "Naga dunia rare bertema buas." },
+    { name: "Chronocus", price: "10K", rarity: "World • Uncommon", category: "world", how: "Dunia (World) — dapat diperoleh dari eksplorasi dunia.", desc: "Naga dunia uncommon bertema waktu." },
+    { name: "Coralina", price: "10K", rarity: "World • Rare", category: "world", how: "Dunia (World) — dapat diperoleh dari eksplorasi dunia.", desc: "Naga dunia rare bertema karang." },
+    { name: "Bizaltidath", price: "10K", rarity: "World • Rare", category: "world", how: "Dunia (World) — dapat diperoleh dari eksplorasi dunia.", desc: "Naga dunia rare dengan nilai rendah." },
+    { name: "Enkylous", price: "5K - 8K", rarity: "World • Common", category: "world", how: "Dunia (World) — dapat diperoleh dari eksplorasi dunia.", desc: "Naga dunia common dengan nilai rendah." },
+    { name: "Agricos", price: "5K - 8K", rarity: "World • Common", category: "world", how: "Dunia (World) — dapat diperoleh dari eksplorasi dunia.", desc: "Naga dunia common dengan nilai rendah." },
+    { name: "Bisonture", price: "5K - 8K", rarity: "World • Common", category: "world", how: "Dunia (World) — dapat diperoleh dari eksplorasi dunia.", desc: "Naga dunia common bertema bison." },
+    { name: "Taihoa", price: "5K - 8K", rarity: "World • Common", category: "world", how: "Dunia (World) — dapat diperoleh dari eksplorasi dunia.", desc: "Naga dunia common dengan nilai rendah." },
+    { name: "Geliklen", price: "5K - 8K", rarity: "World • Common", category: "world", how: "Dunia (World) — dapat diperoleh dari eksplorasi dunia.", desc: "Naga dunia common dengan nilai rendah." },
+    { name: "Zeipera", price: "5K - 8K", rarity: "World • Uncommon", category: "world", how: "Dunia (World) — dapat diperoleh dari eksplorasi dunia.", desc: "Naga dunia uncommon dengan nilai rendah." },
+    { name: "Sylva", price: "5K - 8K", rarity: "World • Uncommon", category: "world", how: "Dunia (World) — dapat diperoleh dari eksplorasi dunia.", desc: "Naga dunia uncommon bertema hutan." },
+    { name: "Taraka", price: "5K - 8K", rarity: "World • Uncommon", category: "world", how: "Dunia (World) — dapat diperoleh dari eksplorasi dunia.", desc: "Naga dunia uncommon dengan nilai rendah." },
+    { name: "Tigrilia", price: "5K - 8K", rarity: "World • Uncommon", category: "world", how: "Dunia (World) — dapat diperoleh dari eksplorasi dunia.", desc: "Naga dunia uncommon bertema harimau." },
+    { name: "Rhyndac", price: "5K - 8K", rarity: "World • Common", category: "world", how: "Dunia (World) — dapat diperoleh dari eksplorasi dunia.", desc: "Naga dunia common dengan nilai rendah." },
+    { name: "Khepera", price: "5K - 8K", rarity: "World • Common", category: "world", how: "Dunia (World) — dapat diperoleh dari eksplorasi dunia.", desc: "Naga dunia common bertema kumbang." },
+    { name: "Palus", price: "5K - 8K", rarity: "World • Common", category: "world", how: "Dunia (World) — dapat diperoleh dari eksplorasi dunia.", desc: "Naga dunia common bertema rawa." },
+    { name: "Venid", price: "5K - 8K", rarity: "World • Uncommon", category: "world", how: "Dunia (World) — dapat diperoleh dari eksplorasi dunia.", desc: "Naga dunia uncommon dengan nilai rendah." },
+    { name: "Magmip", price: "5K - 8K", rarity: "World • Uncommon", category: "world", how: "Dunia (World) — dapat diperoleh dari eksplorasi dunia.", desc: "Naga dunia uncommon bertema magma." },
+    { name: "Dexyn", price: "1K - 3K", rarity: "World • Common", category: "world", how: "Dunia (World) — dapat diperoleh dari eksplorasi dunia.", desc: "Naga dunia common dengan nilai rendah." },
+    { name: "Krekiz", price: "1K - 3K", rarity: "World • Rare", category: "world", how: "Dunia (World) — dapat diperoleh dari eksplorasi dunia.", desc: "Naga dunia rare dengan nilai rendah." },
+    { name: "Saurium", price: "1K - 3K", rarity: "World • Common", category: "world", how: "Dunia (World) — dapat diperoleh dari eksplorasi dunia.", desc: "Naga dunia common populer." },
+    { name: "Rocirus", price: "1K - 3K", rarity: "World • Common", category: "world", how: "Dunia (World) — dapat diperoleh dari eksplorasi dunia.", desc: "Naga dunia common dengan nilai rendah." },
+    { name: "Howler", price: "1K - 3K", rarity: "World • Common", category: "world", how: "Dunia (World) — dapat diperoleh dari eksplorasi dunia.", desc: "Naga dunia common bertema howler." },
+    { name: "Alrenoth", price: "1K - 3K", rarity: "World • Rare", category: "world", how: "Dunia (World) — dapat diperoleh dari eksplorasi dunia.", desc: "Naga dunia rare dengan nilai rendah." },
+    { name: "Tuskaryn", price: "1K - 3K", rarity: "World • Uncommon", category: "world", how: "Dunia (World) — dapat diperoleh dari eksplorasi dunia.", desc: "Naga dunia uncommon bertema gading." },
+    { name: "Suiikipon", price: "1K - 3K", rarity: "World • Common", category: "world", how: "Dunia (World) — dapat diperoleh dari eksplorasi dunia.", desc: "Naga dunia common dengan nilai rendah." },
+    { name: "Amphyll", price: "1K - 3K", rarity: "World • Common", category: "world", how: "Dunia (World) — dapat diperoleh dari eksplorasi dunia.", desc: "Naga dunia common bertema amphyll." },
+    { name: "Numine", price: "1K - 3K", rarity: "World • Common", category: "world", how: "Dunia (World) — dapat diperoleh dari eksplorasi dunia.", desc: "Naga dunia common dengan nilai rendah." },
+    { name: "Atarix", price: "1K - 3K", rarity: "World • Common", category: "world", how: "Dunia (World) — dapat diperoleh dari eksplorasi dunia.", desc: "Naga dunia common dengan nilai rendah." },
+    { name: "Cocovira", price: "1K - 3K", rarity: "World • Common", category: "world", how: "Dunia (World) — dapat diperoleh dari eksplorasi dunia.", desc: "Naga dunia common bertema kelapa." },
+    { name: "Venu", price: "1K - 3K", rarity: "World • Common", category: "world", how: "Dunia (World) — dapat diperoleh dari eksplorasi dunia.", desc: "Naga dunia common dengan nilai rendah." },
+    { name: "Yaruakura", price: "1K - 3K", rarity: "World • Uncommon", category: "world", how: "Dunia (World) — dapat diperoleh dari eksplorasi dunia.", desc: "Naga dunia uncommon dengan nilai rendah." },
+    { name: "Neroxide", price: "1K - 3K", rarity: "World • Common", category: "world", how: "Dunia (World) — dapat diperoleh dari eksplorasi dunia.", desc: "Naga dunia common dengan nilai rendah." }
+  ];
+
+  // Helper: memberi warna/ikon berdasarkan rarity (opsional, hanya untuk variasi visual)
+  function getRarityIcon(rarity) {
+    if (rarity.includes('Relic')) return 'fa-gem';
+    if (rarity.includes('Legendary')) return 'fa-crown';
+    if (rarity.includes('Epic')) return 'fa-star';
+    if (rarity.includes('Rare')) return 'fa-circle';
+    return 'fa-dot-circle';
+  }
+
+  // ========== RENDER KARTU ==========
+  const grid = document.getElementById('dragonGrid');
+  const searchInput = document.getElementById('searchInput');
+  const filterBtns = document.querySelectorAll('.filter-btn');
+  const modalOverlay = document.getElementById('modalOverlay');
+  const modalClose = document.getElementById('modalClose');
+
+  let currentFilter = 'all';
+  let currentSearch = '';
+
+  function renderDragons() {
+    // Filter data
+    const filtered = dragonsData.filter(dragon => {
+      const matchFilter = currentFilter === 'all' || dragon.category === currentFilter;
+      const matchSearch = dragon.name.toLowerCase().includes(currentSearch.toLowerCase().trim());
+      return matchFilter && matchSearch;
+    });
+
+    // Urutkan: harga tertinggi dulu (berdasarkan teks, tapi kita beri prioritas manual sesuai data asli)
+    // Data sudah terurut dari yang tertinggi di sumber, jadi kita pertahankan urutan asli.
+
+    if (filtered.length === 0) {
+      grid.innerHTML = `<div class="empty-state"><i class="fas fa-dragon"></i><p>Tidak ada naga yang cocok dengan pencarian / filter.</p></div>`;
+      return;
+    }
+
+    // Buat kartu
+    grid.innerHTML = filtered.map(dragon => {
+      const icon = getRarityIcon(dragon.rarity);
+      return `
+       
